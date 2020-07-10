@@ -18,13 +18,23 @@ function generatePassword() {
   const numbersArray = ['0','1','2','3','4','5','6','7','8','9']
   const specialCharactersArray = ['!','@','#','$','%','^','&','*','(',')']
   var passwordArray = []
+  var finalPass = []
   var lengthPass = prompt('How long do you want the password?(between 8 and 128 characters)')
-  
+  // Fisher Yates shuffle algorithm on StackOverflow
+  function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+  }
   if (lengthPass < 8 || lengthPass > 128 || isNaN(lengthPass)){
     alert('needs to be a number between 8 and 128')
   }
   else {
-  console.log(lengthPass)
   var lowercaseQuestion = confirm('Do you want to use lowercase characters?')
   var uppercaseQuestion = confirm('Do you want to use uppercase characters?')
   var numericQuestion = confirm('Do you want to use number characters?')
@@ -32,36 +42,51 @@ function generatePassword() {
   }
 
   if (lowercaseQuestion === true){
-    var lowercaseValue = lowercaseArray[Math.floor(Math.random() * lowercaseArray.length)];
-    passwordArray.push(lowercaseValue)
-  }
-  else {
-    console.log('lowercase letters denied')
-  }
-  if (uppercaseQuestion === true){
-    var uppercaseValue = uppercaseArray[Math.floor(Math.random() * uppercaseArray.length)];
-    passwordArray.push(uppercaseValue)
-  }
-  else {
-    console.log('Uppercase letters denied')
-  }
-  if (numericQuestion === true){
-    var numbersValue = numbersArray[Math.floor(Math.random() * numbersArray.length)];
-    passwordArray.push(numbersValue)
-  }
-  else {
-    console.log('Numbers denied')
-  }
-  if (specialQuestion === true){
-    var specialCharactersValue = specialCharactersArray[Math.floor(Math.random() * specialCharactersArray.length)];
-    passwordArray.push(specialCharactersValue)
-  }
-  else {
-    console.log('Special characters denied')
+    var iterator = lowercaseArray.values();
+    for (let elements of iterator){
+    
+    for (i = 0; i < lengthPass; i++){
+      passwordArray.push(elements)
+    }
+    }
   }
 
+  if (uppercaseQuestion === true){
+    var iterator = uppercaseArray.values();
+    for (let elements of iterator){
+    
+    for (i = 0; i < lengthPass; i++){
+      passwordArray.push(elements)
+    }
+    }
+  }
+
+  if (numericQuestion === true){
+    var iterator = numbersArray.values();
+    for (let elements of iterator){
+    
+    for (i = 0; i < lengthPass; i++){
+      passwordArray.push(elements)
+    }
+    }
+  }
+  if (specialQuestion === true){
+    var iterator = specialCharactersArray.values();
+    for (let elements of iterator){
+    
+    for (i = 0; i < lengthPass; i++){
+      passwordArray.push(elements)
+    }
+    }
+  }
   if (lowercaseQuestion === false && uppercaseQuestion === false && numericQuestion === false && specialQuestion === false){
     alert('you need to pick one type of character')
   }
-return passwordArray
+
+  shuffle(passwordArray) 
+  for (i = 0; i < lengthPass; i++){
+    finalPass.push(passwordArray[i])
+  }
+    
+return finalPass.join('')
 }
